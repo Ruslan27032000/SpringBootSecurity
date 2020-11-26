@@ -1,0 +1,94 @@
+<html xmlns:th = "http://www.thymeleaf.org" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/admin.html">
+
+<div layout:fragment="admin_content">
+    <div class="container">
+        <button class="btn btn-info"  data-toggle="modal" data-target="#addBrand" style="background-color: rgba(20,0,72,1); " th:text="#{button.add_new_brand}"></button>
+        <div class="modal fade" id="addBrand" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form th:action="@{'/addBrand'}" method="post">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addModalLabel" th:text="#{label.new_brand}"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label th:text="#{label.item_name}">:</label>
+                                <input type="text" name="name" style="width: 100%; height: 35px" value="">
+                            </div>
+                            <div class="form-group">
+                                <label th:text="#{label.item_country}">:</label>
+                                <select class="from-control" name="country_id" style="width: 100%; height: 35px">
+                                    <option th:each="country : ${countries}" th:text="${country.getName() + '/' + country.getCode()}" th:value="${country.getId()}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" style="background-color: rgba(46,86,80,1);" th:text="#{button.add}"></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-12">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th th:text="#{label.item_name}"></th>
+                        <th th:text="#{label.item_country}"></th>
+                        <th th:text="#{label.details_text}"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="brand : ${brands}">
+                        <td th:text="${brand.getId()}"></td>
+                        <td th:text="${brand.getName()}"></td>
+                        <td th:text="${brand.getCountry()!=null?brand.getCountry().getName():'-'}"></td>
+                        <td>
+                            <button class="btn btn-info"  data-toggle="modal" th:data-target="'#detailsBrand' + ${brand.getId()}" style="background-color: rgba(20,0,72,1); " th:text="#{button.details}"></button>
+                            <div class="modal fade" th:id="'detailsBrand' + ${brand.getId()}" tabindex="-1" aria-labelledby="addModalLabel1" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form th:action="@{'/editBrand'}" method="post">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="addModalLabel1" th:text="#{label.details_text}"></h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <input type="hidden" name="id" th:value="${brand.getId()}">
+                                                <div class="form-group">
+                                                    <label th:text="#{label.item_name}">:</label>
+                                                    <input type="text" name="name" style="width: 100%; height: 35px" th:value="${brand.getName()}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:text="#{label.item_country}">:</label>
+                                                    <select name="country_id" style="height: 35px; width: 100%">
+                                                        <option th:each="country:${countries}" th:text="${country.getName() + '/' + country.getCode()}" th:value="${country.getId()}"  th:selected="${country.getId()==brand.getCountry().getId()}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" name="act" value="edit" class="btn btn-primary" style="background-color: rgba(46,86,80,1);" th:text="#{button.edit}"></button>
+                                                <button type="submit" name="act" value="delete" class="btn btn-danger" th:text="#{button.delete}"></button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

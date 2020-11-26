@@ -1,0 +1,14 @@
+<html xmlns:th = "http://www.thymeleaf.org" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:sec = "http://www.thymeleaf.org/extras/spring-security"
+>
+    <head>
+        <meta charset="UTF-8">
+        <div class="container" th:insert="~{layout/head}"></div>
+        <title>Home Page</title>
+    </head>
+    <body>
+        <div class="container-fluid" th:insert="~{layout/navbar}"></div>
+        <div class="container" layout:fragment="content_site"></div>
+        <footer class="page-footer" style="background-color: rgba(62,63,61,1); width: 100%; position: relative; margin-top: 70px" th:insert="~{layout/footer}"></footer>
+    </body>
+  </html>

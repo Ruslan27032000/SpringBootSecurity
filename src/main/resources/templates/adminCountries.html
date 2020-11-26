@@ -1,0 +1,90 @@
+<html xmlns:th = "http://www.thymeleaf.org" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/admin.html">
+
+<div layout:fragment="admin_content">
+    <div class="container">
+        <button class="btn btn-info"  data-toggle="modal" data-target="#addCountry" style="background-color: rgba(20,0,72,1); " th:text="#{button.add_new_country}"></button>
+        <div class="modal fade" id="addCountry" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form th:action="@{'/addCountry'}" method="post">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addModalLabel" th:text="#{label.new_country}"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label th:text="#{label.item_name}">:</label>
+                                <input type="text" name="name" style="width: 100%; height: 35px" value="">
+                            </div>
+                            <div class="form-group">
+                                <label th:text="#{label.code}">:</label>
+                                <input type="text" name="code" style="width: 100%; height: 35px" value="">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" style="background-color: rgba(46,86,80,1);" th:text="#{button.add}"></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-12">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th th:text="#{label.item_name}"></th>
+                        <th th:text="#{label.code}"></th>
+                        <th th:text="#{label.details_text}"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="country : ${countries}">
+                        <td th:text="${country.getId()}"></td>
+                        <td th:text="${country.getName()}"></td>
+                        <td th:text="${country.getCode()}"></td>
+                        <td>
+                            <button class="btn btn-info"  data-toggle="modal" th:data-target="'#detailsCountry' + ${country.getId()}" style="background-color: rgba(20,0,72,1); " th:text="#{button.details}"></button>
+                            <div class="modal fade" th:id="'detailsCountry' + ${country.getId()}" tabindex="-1" aria-labelledby="addModalLabel1" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form th:action="@{'/editCountry'}" method="post">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="addModalLabel1" th:text="#{label.details_text}"></h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <input type="hidden" name="id" th:value="${country.getId()}">
+                                                <div class="form-group">
+                                                    <label th:text="#{label.item_name}">:</label>
+                                                    <input type="text" name="name" style="width: 100%; height: 35px" th:value="${country.getName()}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:text="#{label.code}">:</label>
+                                                    <input type="text" name="code" style="width: 100%; height: 35px" th:value="${country.getCode()}">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" name="act" value="edit" class="btn btn-primary" style="background-color: rgba(46,86,80,1);" th:text="#{button.edit}"></button>
+                                                <button type="submit" name="act" value="delete" class="btn btn-danger" th:text="#{button.delete}"></button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

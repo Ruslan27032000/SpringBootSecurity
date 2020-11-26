@@ -1,0 +1,68 @@
+<html xmlns:th = "http://www.thymeleaf.org"  >
+    <div class="row" style="border-radius: 5px;border: 1px solid lightgrey; background-color: rgba(46,86,80,1); width: 100%; height: 50px;">
+        <label style="padding: 10px; color: white; font-weight: 600" th:text="#{label.categories}">
+        </label>
+    </div>
+    <div class="row" style="border-radius: 5px;border: 1px solid lightgrey; width: 100%; height: 50px">
+        <i class="fa fa-shopping-cart" style="color: black; font-weight: 600; padding-top: 15px; padding-left: 10px"></i>
+        <a th:href="@{'/'}" style="padding: 10px; color: black; font-weight: 600; text-decoration: none" th:text="#{label.all_products}">
+        </a>
+    </div>
+    <div class="row" style="border-radius: 5px;border: 1px solid lightgrey; width: 100%; height: 50px">
+        <i class="fa fa-mobile" style="color: black; font-weight: 600; padding-top: 15px; font-size: 22px; padding-left: 10px"></i>
+        <a th:href="@{'/'}" style="padding: 10px; color: black; font-weight: 600; text-decoration: none" th:text="#{label.phones}">
+        </a>
+    </div>
+    <div class="row" style="border-radius: 5px;border: 1px solid lightgrey; width: 100%; height: 50px">
+        <i class="fa fa-television" style="color: black; padding-top: 15px; font-weight: 600; padding-left: 10px"></i>
+        <a th:href="@{'/'}" style="padding: 10px; font-weight: 600; color: black; text-decoration: none" th:text="#{label.TV}">
+        </a>
+    </div>
+    <div class="row" style="border-radius: 5px;border: 1px solid lightgrey; width: 100%; height: 50px">
+        <i class="fa fa-gamepad" style="color: black; padding-top: 15px; padding-left: 10px"></i>
+        <a th:href="@{'/'}" style="padding: 10px; color: black; font-weight: 600; text-decoration: none" th:text="#{label.consoles}">
+        </a>
+    </div>
+    <div class="row" style="border-radius: 5px;border: 1px solid lightgrey; width: 100%; height: 50px; margin-bottom: 25px">
+        <i class="fa fa-cart-plus" style="color: black; padding-top: 15px; padding-left: 10px"></i>
+        <a th:href="@{'/'}" style="padding: 10px; color: black; font-weight: 600; text-decoration: none" th:text="#{label.other}">
+        </a>
+    </div>
+    <!--================-->
+    <div class="row" style="border-radius: 5px;border: 1px solid lightgrey; background-color: rgba(46,86,80,1); width: 100%; height: 50px;">
+        <label style="padding: 10px; color: white; font-weight: 600" th:text="#{label.brands}">
+        </label>
+    </div>
+    <div class="row" style="border-radius: 5px;border: 1px solid lightgrey; width: 100%; height: 50px">
+        <a th:href="@{'/search?searchByBrand=Apple'}" style="padding: 10px; color: black; font-weight: 600; text-decoration: none">Apple
+        </a>
+    </div>
+    <div class="row" style="border-radius: 5px;border: 1px solid lightgrey; width: 100%; height: 50px">
+        <a th:href="@{'/search?searchByBrand=Samsung'}" style="padding: 10px; color: black; font-weight: 600; text-decoration: none">Samsung
+        </a>
+    </div>
+    <div class="row" style="border-radius: 5px;border: 1px solid lightgrey; width: 100%; height: 50px">
+        <a th:href="@{'/search?searchByBrand=LG'}" style="padding: 10px; color: black; font-weight: 600; text-decoration: none">LG
+        </a>
+    </div>
+    <div class="row" style="border-radius: 5px;border: 1px solid lightgrey; width: 100%; height: 50px">
+        <a th:href="@{'/search?searchByBrand=Huawei'}" style="padding: 10px; color: black; font-weight: 600; text-decoration: none">Huawei
+        </a>
+    </div>
+    <div class="row" style="border-radius: 5px;border: 1px solid lightgrey; width: 100%; height: 50px">
+        <a th:href="@{'/search?searchByBrand=Zepter'}" style="padding: 10px; color: black; font-weight: 600; text-decoration: none">Zepter
+        </a>
+    </div>
+    <div class="row" style="border-radius: 5px;border: 1px solid lightgrey; width: 100%; height: 50px">
+        <a th:href="@{'/search?searchByBrand=Xiaomi'}" style="padding: 10px; color: black; font-weight: 600; text-decoration: none">Xiaomi
+        </a>
+    </div>
+    <div class="row" style="border-radius: 5px;border: 1px solid lightgrey; width: 100%; height: 50px">
+        <a th:href="@{'/search?searchByBrand=Nokia'}" style="padding: 10px; color: black; font-weight: 600; text-decoration: none">Nokia
+        </a>
+    </div>
+    <div class="row" style="border-radius: 5px;border: 1px solid lightgrey; width: 100%; height: 50px">
+        <a th:href="@{'/search?searchByBrand=-'}" style="padding: 10px; color: black; font-weight: 600; text-decoration: none">Other
+        </a>
+    </div>
+</html>

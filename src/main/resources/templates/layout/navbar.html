@@ -1,0 +1,26 @@
+<div class="row" style="background-color: #C93D2B; height: 55px; padding: 10px 0" xmlns:th="http://www.thymeleaf.org"  xmlns:sec = "http://www.thymeleaf.org/extras/spring-security">
+    <div class="col-sm-9 text-left" style="padding-left: 30px">
+        <a th:href="@{'/'}"
+           style="text-decoration: none; color: white; font-size: 26px; font-weight: bold; padding-left: 10px">Home</a>
+    </div>
+    <div class="col-sm-3 text-left" style="height: 30px;">
+        <div class="btn-group">
+
+            <a class="btn btn-link" th:href="@{'?lng=en'}">ENG</a>
+            <a class="btn btn-link" th:href="@{'?lng=ru'}">РУС</a>
+
+            <a th:href="@{'/login'}" class="btn btn-outline-secondary" style="text-decoration: none; color:white;"
+               th:text="#{button.login}" sec:authorize="isAnonymous()">
+            </a>
+            <a href="JavaScript:void(0)" onclick="document.getElementById('logoutFormId').submit()" class="btn btn-outline-secondary" style="text-decoration: none; color:white;"
+               th:text="#{button.logout}" sec:authorize="isAuthenticated()">
+            </a>
+            <a th:href="@{'/admin'}" class="btn btn-outline-secondary" style="text-decoration: none; color:white;"
+               th:text="#{button.admin}" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MODERATOR')">
+            </a>
+            <form th:action="@{'/logout'}" method="post" id="logoutFormId" sec:authorize="isAuthenticated()">
+
+            </form>
+        </div>
+    </div>
+</div>

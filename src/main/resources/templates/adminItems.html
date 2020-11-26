@@ -1,0 +1,216 @@
+<html xmlns:th = "http://www.thymeleaf.org" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/admin.html">
+
+    <div layout:fragment="admin_content">
+        <div class="container">
+            <button class="btn btn-info"  data-toggle="modal" data-target="#addItem" style="background-color: rgba(20,0,72,1); " th:text="#{button.add_new_item}"></button>
+            <div class="modal fade" id="addItem" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form th:action="@{'/addItem'}" method="post">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addModalLabel" th:text="#{label.new_item}"></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label th:text="#{label.item_name}">:</label>
+                                    <input type="text" name="name" style="width: 100%; height: 35px" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label th:text="#{label.item_description}">:</label>
+                                    <textarea name="description" style="width: 100%; height: 100px"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label th:text="#{label.item_price}">:</label>
+                                    <input type="number" name="price" style="width: 100%; height: 35px">
+                                </div>
+                                <div class="form-group">
+                                    <label th:text="#{label.item_amount}">:</label>
+                                    <input type="number" name="amount" style="width: 100%; height: 35px">
+                                </div>
+                                <div class="form-group">
+                                    <label th:text="#{label.item_rating}">:</label>
+                                    <select name="stars" style="height: 35px; width: 100%">
+                                        <option>0</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label th:text="#{label.item_smallPic}">:</label>
+                                    <input type="text" name="smallPic" style="width: 100%; height: 35px" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label th:text="#{label.item_largePic}">:</label>
+                                    <input type="text" name="largePic" style="width: 100%; height: 35px" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label th:text="#{label.item_addedDate}">:</label>
+                                    <input type="date" name="addedDate" style="width: 100%; height: 35px" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label th:text="#{label.item_inTOP}">:</label>
+                                    <select name="inTOP" style="height: 35px; width: 100%">
+                                        <option>true</option>
+                                        <option>false</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label th:text="#{label.item_brand}">:</label>
+                                    <select class="from-control" name="brand_id" style="width: 100%; height: 35px">
+                                        <option th:each="brand : ${brands}" th:text="${brand.getName()}" th:value="${brand.getId()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary" style="background-color: rgba(46,86,80,1);" th:text="#{button.add}"></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row mt-5">
+                <div class="col-12">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th th:text="#{label.item_name}"></th>
+                                <th th:text="#{label.item_price}"></th>
+                                <th th:text="#{label.item_addedDate}"></th>
+                                <th th:text="#{label.item_brand}"></th>
+                                <th th:text="#{label.item_category}"></th>
+                                <th th:text="#{label.details_text}"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="i : ${items}">
+                                <td th:text="${i.getId()}"></td>
+                                <td th:text="${i.getName()}"></td>
+                                <td th:text="${i.getPrice()}"></td>
+                                <td th:text="${i.getAddedDate()}"></td>
+                                <td th:text="${i.getBrand()!=null?i.getBrand().getName()+'/'+i.getBrand().getCountry().getName():'-'}"></td>
+                                <td>
+                                    <button class="btn btn-info"  data-toggle="modal" th:data-target="'#category' + ${i.getId()}" style="background-color: rgba(20,0,72,1); " >+</button>
+                                    <div class="modal fade" th:id="'category' + ${i.getId()}" tabindex="-1" aria-labelledby="addModalLabel2" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="addModalLabel2" th:text="#{label.categories}"></h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <table>
+                                                        <tbody>
+                                                            <tr th:each="cat : ${categories}">
+                                                                <form th:action="@{'/assignCategory'}" method="post">
+                                                                    <input type="hidden" name="item_id" th:value="${i.getId()}">
+                                                                    <input type="hidden" name="category_id" th:value="${cat.getId()}">
+                                                                    <td th:text="${cat.getName()}"></td>
+                                                                    <td width="10%">
+                                                                        <button class="btn btn-success btn-sm" th:if="${!i.getCategories().contains(cat)}" name="act" value="add"> + </button>
+                                                                        <button class="btn btn-danger btn-sm" th:unless="${!i.getCategories().contains(cat)}" name="act" value="delete"> - </button>
+                                                                    </td>
+                                                                </form>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="btn btn-info"  data-toggle="modal" th:data-target="'#detailsItem' + ${i.getId()}" style="background-color: rgba(20,0,72,1); " th:text="#{button.details}"></button>
+                                    <div class="modal fade" th:id="'detailsItem' + ${i.getId()}" tabindex="-1" aria-labelledby="addModalLabel1" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <form th:action="@{'/editItem'}" method="post">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="addModalLabel1" th:text="#{label.details_text}"></h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <input type="hidden" name="id" th:value="${i.getId()}">
+                                                        <div class="form-group">
+                                                            <label th:text="#{label.item_name}">:</label>
+                                                            <input type="text" name="name" style="width: 100%; height: 35px" th:value="${i.getName()}">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label th:text="#{label.item_description}">:</label>
+                                                            <textarea name="description" style="width: 100%; height: 100px" th:text="${i.getDescription()}"></textarea>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label th:text="#{label.item_price}">:</label>
+                                                            <input type="number" name="price" style="width: 100%; height: 35px" th:value="${i.getPrice()}">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label th:text="#{label.item_amount}">:</label>
+                                                            <input type="number" name="amount" style="width: 100%; height: 35px" th:value="${i.getAmount()}">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label th:text="#{label.item_rating}">:</label>
+                                                            <select name="stars" style="height: 35px; width: 100%">
+                                                                <option th:selected="${i.getStars()==0}">0</option>
+                                                                <option th:selected="${i.getStars()==1}">1</option>
+                                                                <option th:selected="${i.getStars()==2}">2</option>
+                                                                <option th:selected="${i.getStars()==3}">3</option>
+                                                                <option th:selected="${i.getStars()==4}">4</option>
+                                                                <option th:selected="${i.getStars()==5}">5</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label th:text="#{label.item_smallPic}">:</label>
+                                                            <input type="text" name="smallPic" style="width: 100%; height: 35px" th:value="${i.getSmallPic()}">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label th:text="#{label.item_largePic}">:</label>
+                                                            <input type="text" name="largePic" style="width: 100%; height: 35px" th:value="${i.getLargePic()}">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label th:text="#{label.item_addedDate}">:</label>
+                                                            <input type="date" name="addedDate" style="width: 100%; height: 35px">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label th:text="#{label.item_inTOP}">:</label>
+                                                            <select name="inTOP" style="height: 35px; width: 100%">
+                                                                <option th:selected="${i.isInTop()}">true</option>
+                                                                <option th:selected="${!i.isInTop()}">false</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label th:text="#{label.item_brand}">:</label>
+                                                            <select name="brand_id" style="height: 35px; width: 100%">
+                                                                <option th:each="brand:${brands}" th:text="${brand.getName()}" th:value="${brand.getId()}"  th:selected="${brand.getId()==i.getBrand().getId()}"></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" name="act" value="edit" class="btn btn-primary" style="background-color: rgba(46,86,80,1);" th:text="#{button.edit}"></button>
+                                                        <button type="submit" name="act" value="delete" class="btn btn-danger" th:text="#{button.delete}"></button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</html>

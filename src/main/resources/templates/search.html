@@ -1,0 +1,91 @@
+<html xmlns:th = "http://www.thymeleaf.org" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <div class="container" th:insert="~{layout/head}"></div>
+    <div class="container" th:insert="~{layout/radiostyle}"></div>
+    <title>Search page</title>
+</head>
+<body>
+<div class="container-fluid" th:insert="~{layout/navbar}"></div>
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-3" th:insert="~{layout/navigation}"></div>
+        <div class="col-9">
+            <div class="container">
+                <form th:action="@{'/search'}" method="get">
+                    <div class="row" style="margin-bottom: 15px">
+                        <div class="col-3">
+                            <label style="text-align: left" th:text="#{label.search_name}">:</label>
+                                <input class="form-control form-control-sm mr-3" type="text" name = "searchByName" placeholder=""
+                                       aria-label="Search" style="color: rgba(46,86,80,1); width: 100%; height: 40px; font-size: 18px; border: 1px solid rgba(46,86,80,1)" th:value="${search_name}">
+                        </div>
+                        <div class="col-3">
+                            <label style="text-align: left" th:text="#{label.search_brand}">:</label>
+                            <select class="form-control form-control-sm mr-3" name = "searchByBrand"
+                                   aria-label="Search" style="color: rgba(46,86,80,1); width: 100%; height: 40px; font-size: 18px; border: 1px solid rgba(46,86,80,1)">
+                            <option th:selected="${search_brand.equals('-')}" th:value="'-'">-</option>
+                            <option th:each="brand : ${brands}" th:text="${brand.getName()}" th:value="${brand.getName()}" th:selected="${brand.getName().equals(search_brand)}"></option>
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <label style="text-align: left" th:text="#{label.price_from}">:</label>
+                                <input class="form-control form-control-sm mr-3" type="text" name = "searchByFrom" placeholder=""
+                                       aria-label="Search" style="color: rgba(46,86,80,1); width: 100%; height: 40px; font-size: 18px; border: 1px solid rgba(46,86,80,1)">
+                        </div>
+                        <div class="col-2">
+                            <label style="text-align: left" th:text="#{label.price_to}">:</label>
+                                <input class="form-control form-control-sm mr-3" type="text" name = "searchByTo" placeholder=""
+                                       aria-label="Search" style="color: rgba(46,86,80,1); width: 100%; height: 40px; font-size: 18px; border: 1px solid rgba(46,86,80,1)">
+                        </div>
+                        <div class="col-2">
+                                <button class="btn btn-primary" type="submit" style="margin-top:32px; background-color: rgba(46,86,80,1); border: 1px solid rgba(46,86,80,1); height: 40px; width: 100%" ><i class="fa fa-search" style="color: white" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-8">
+                            <h3 style="" th:text="#{label.search_result}">:</h3>
+                        </div>
+                        <div class="col-4">
+                            <label style="font-size: 18px" th:text="#{label.ordered_by_price}">:</label>
+                            <div class="radio_buttons">
+                                <div>
+                                    <input type="radio" name="option" id="radio1" value="asc" checked />
+                                    <label for="radio1" th:text="#{label.ascending}"></label>
+                                </div>
+                                <div>
+                                    <input type="radio" name="option" id="radio2" value="desc"/>
+                                    <label for="radio2" th:text="#{label.descending}"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="container">
+                <div class="row mt-5">
+                    <div class="col-4" th:each="i : ${items}">
+                        <div class="card" style="margin-bottom: 20px; min-height: 520px;" >
+                            <div class="card-header" style="height: 65px">
+                                <a th:href="@{'/details/' + ${i.getId()}}" style="color: blue; font-size: 18px" th:text="${i.getName()}"></a>
+                            </div>
+                            <div class="card-body">
+                                <img th:src="${i.getSmallPic()}" class="card-img-top" alt="" style="padding-bottom: 10px">
+                                <span style="padding-top:10px; font-size: 20px; font-weight: bold" th:text="${i.getPrice()}"></span><span style="font-size: 20px; font-weight: bold"> T</span>
+                                <p style="font-size: 16px" class="card-text" th:text="${i.getDescription()}"></p>
+                                <span style="font-size: 18px; font-weight: bold" th:text="#{label.item_brand}"></span>: <a th:href="@{'/search?searchByBrand=' + ${i.getBrand().getName()}}" th:text="${i.getBrand().getName() + ', ' + i.getBrand().getCountry().getName()}" style="font-weight: bold; font-size: 18px; color: blue"></a>
+                            </div>
+                            <div class="card-footer" style="background-color: lightgrey; height: 40px; position: relative; bottom: 0">
+                                <i class="fa fa-star" style="color: yellow; margin: 0 0 5px 8px" th:each="number: ${#numbers.sequence(0, i.getStars()-1)}"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="page-footer" style="background-color: rgba(62,63,61,1); width: 100%; position: relative; margin-top: 70px" th:insert="~{layout/footer}"></footer>
+</body>
+</html>
