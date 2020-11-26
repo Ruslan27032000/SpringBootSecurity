@@ -1,9 +1,9 @@
-package com.example.demo.services;
+package com.example.services;
 
-import com.example.demo.entities.Brands;
-import com.example.demo.entities.Categories;
-import com.example.demo.entities.Countries;
-import com.example.demo.entities.Items;
+import com.example.entities.Brands;
+import com.example.entities.Categories;
+import com.example.entities.Countries;
+import com.example.entities.Items;
 
 import java.util.List;
 

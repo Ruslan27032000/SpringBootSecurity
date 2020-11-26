@@ -1,14 +1,14 @@
-package com.example.demo.services.impl;
+package com.example.services.impl;
 
-import com.example.demo.entities.Brands;
-import com.example.demo.entities.Categories;
-import com.example.demo.entities.Countries;
-import com.example.demo.entities.Items;
-import com.example.demo.repositories.BrandRepository;
-import com.example.demo.repositories.CategoriesRepository;
-import com.example.demo.repositories.CountryRepository;
-import com.example.demo.repositories.ItemRepository;
-import com.example.demo.services.ItemService;
+import com.example.entities.Brands;
+import com.example.entities.Categories;
+import com.example.entities.Countries;
+import com.example.entities.Items;
+import com.example.repositories.BrandRepository;
+import com.example.repositories.CategoriesRepository;
+import com.example.repositories.CountryRepository;
+import com.example.repositories.ItemRepository;
+import com.example.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

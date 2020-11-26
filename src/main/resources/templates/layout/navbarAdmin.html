@@ -1,18 +1,11 @@
-<div class="row" style="background-color: rgba(20,0,72,1); height: 55px; padding: 10px 0" xmlns:th = "http://www.thymeleaf.org">
+<div class="row"  xmlns:th = "http://www.thymeleaf.org">
     <div class="col-sm-9 text-left" style="padding-left: 30px">
-        <a th:href="@{'/'}" style="text-decoration: none; color: white; font-size: 26px; font-weight: bold; padding-left: 10px"><i style="padding-left: 10px; padding-right: 10px" class="fa fa-shopping-bag"></i>E-SHOP</a>
+        <a th:href="@{'/'}" style="text-decoration: none; color: black; font-size: 26px; font-weight: bold; padding-left: 10px">Home</a>
     </div>
     <div class="col-sm-3 text-left" style="height: 30px;">
         <div class="btn-group">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: rgba(20,0,72,1)"></button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" th:href="@{'?lng=en'}">ENG</a>
-                <a class="dropdown-item" th:href="@{'?lng=ru'}">РУС</a>
-                <a class="dropdown-item" th:href="@{'?lng=kz'}">ҚАЗ</a>
-            </div>
-            <a th:href="@{'/'}" class="btn btn-outline-secondary" style="text-decoration: none; color:white;">
-                <==
-            </a>
+            <a class="btn btn-link" th:href="@{'?lng=en'}">ENG</a>
+            <a class="btn btn-link" th:href="@{'?lng=ru'}">РУС</a>
         </div>
     </div>
 </div>

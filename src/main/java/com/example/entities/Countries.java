@@ -1,4 +1,5 @@
-package com.example.demo.entities;
+package com.example.entities;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,11 +8,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "categories")
+@Table(name = "counties")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Categories {
+public class Countries {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -20,6 +21,6 @@ public class Categories {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "logo")
-    private String logo;
+    @Column(name = "code")
+    private String code;
 }

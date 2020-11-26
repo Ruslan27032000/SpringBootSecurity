@@ -1,8 +1,10 @@
-<html xmlns:th = "http://www.thymeleaf.org" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/admin.html">
+<html xmlns:th = "http://www.thymeleaf.org" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/admin.html"
+      xmlns:sec = "http://www.thymeleaf.org/extras/spring-security"
+>
 
     <div layout:fragment="admin_content">
         <div class="container">
-            <button class="btn btn-info"  data-toggle="modal" data-target="#addItem" style="background-color: rgba(20,0,72,1); " th:text="#{button.add_new_item}"></button>
+            <button class="btn btn-info"  data-toggle="modal"  sec:authorize="hasRole('ROLE_ADMIN')" data-target="#addItem" style="background-color: #C93D2B; " th:text="#{button.add_new_item}"></button>
             <div class="modal fade" id="addItem" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -83,23 +85,18 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th th:text="#{label.item_name}"></th>
-                                <th th:text="#{label.item_price}"></th>
-                                <th th:text="#{label.item_addedDate}"></th>
-                                <th th:text="#{label.item_brand}"></th>
                                 <th th:text="#{label.item_category}"></th>
                                 <th th:text="#{label.details_text}"></th>
+                                <th th:text="#{label.item_brand}"></th>
+                                <th th:text="#{label.item_name}"></th>
+                                <th th:text="#{label.item_price}"></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="i : ${items}">
                                 <td th:text="${i.getId()}"></td>
-                                <td th:text="${i.getName()}"></td>
-                                <td th:text="${i.getPrice()}"></td>
-                                <td th:text="${i.getAddedDate()}"></td>
-                                <td th:text="${i.getBrand()!=null?i.getBrand().getName()+'/'+i.getBrand().getCountry().getName():'-'}"></td>
                                 <td>
-                                    <button class="btn btn-info"  data-toggle="modal" th:data-target="'#category' + ${i.getId()}" style="background-color: rgba(20,0,72,1); " >+</button>
+                                    <button class="btn btn-info"  data-toggle="modal" th:data-target="'#category' + ${i.getId()}" style="background-color:#C93D2B " >+</button>
                                     <div class="modal fade" th:id="'category' + ${i.getId()}" tabindex="-1" aria-labelledby="addModalLabel2" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -112,17 +109,17 @@
                                                 <div class="modal-body">
                                                     <table>
                                                         <tbody>
-                                                            <tr th:each="cat : ${categories}">
-                                                                <form th:action="@{'/assignCategory'}" method="post">
-                                                                    <input type="hidden" name="item_id" th:value="${i.getId()}">
-                                                                    <input type="hidden" name="category_id" th:value="${cat.getId()}">
-                                                                    <td th:text="${cat.getName()}"></td>
-                                                                    <td width="10%">
-                                                                        <button class="btn btn-success btn-sm" th:if="${!i.getCategories().contains(cat)}" name="act" value="add"> + </button>
-                                                                        <button class="btn btn-danger btn-sm" th:unless="${!i.getCategories().contains(cat)}" name="act" value="delete"> - </button>
-                                                                    </td>
-                                                                </form>
-                                                            </tr>
+                                                        <tr th:each="cat : ${categories}">
+                                                            <form th:action="@{'/assignCategory'}" method="post">
+                                                                <input type="hidden" name="item_id" th:value="${i.getId()}">
+                                                                <input type="hidden" name="category_id" th:value="${cat.getId()}">
+                                                                <td th:text="${cat.getName()}"></td>
+                                                                <td width="10%">
+                                                                    <button class="btn btn-success btn-sm" th:if="${!i.getCategories().contains(cat)}" name="act" value="add"> + </button>
+                                                                    <button class="btn btn-danger btn-sm" th:unless="${!i.getCategories().contains(cat)}" name="act" value="delete"> - </button>
+                                                                </td>
+                                                            </form>
+                                                        </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -131,7 +128,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <button class="btn btn-info"  data-toggle="modal" th:data-target="'#detailsItem' + ${i.getId()}" style="background-color: rgba(20,0,72,1); " th:text="#{button.details}"></button>
+                                    <button class="btn btn-info"  data-toggle="modal" th:data-target="'#detailsItem' + ${i.getId()}" style="background-color: #C93D2B " th:text="#{button.details}"></button>
                                     <div class="modal fade" th:id="'detailsItem' + ${i.getId()}" tabindex="-1" aria-labelledby="addModalLabel1" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -199,13 +196,16 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="submit" name="act" value="edit" class="btn btn-primary" style="background-color: rgba(46,86,80,1);" th:text="#{button.edit}"></button>
-                                                        <button type="submit" name="act" value="delete" class="btn btn-danger" th:text="#{button.delete}"></button>
+                                                        <button type="submit" name="act"  sec:authorize="hasRole('ROLE_ADMIN')" value="delete" class="btn btn-danger" th:text="#{button.delete}"></button>
                                                     </div>
                                                 </form>
                                             </div>
                                         </div>
                                     </div>
                                 </td>
+                                <td th:text="${i.getBrand()!=null?i.getBrand().getName()+'/'+i.getBrand().getCountry().getName():'-'}"></td>
+                                <td th:text="${i.getName()}"></td>
+                                <td th:text="${i.getPrice()}"></td>
                             </tr>
                         </tbody>
                     </table>

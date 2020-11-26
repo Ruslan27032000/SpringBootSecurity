@@ -1,6 +1,6 @@
-package com.example.demo.config;
+package com.example.config;
 
-import com.example.demo.services.UserService;
+import com.example.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

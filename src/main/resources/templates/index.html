@@ -4,15 +4,15 @@
     <div class="row mt-5">
         <div class="col-3" th:insert="~{layout/navigation}"></div>
         <div class="col-9">
-            <div class="container">
-                <form class="form-inline d-flex justify-content-center md-form form-sm active-pink-2" th:action="@{'/search'}" method="get">
-                    <input type="hidden" name="searchByFrom" value="">
-                    <input type="hidden" name="searchByTo" value="">
-                    <input class="form-control form-control-sm mr-3" type="text" th:placeholder="#{label.search}"
-                           name="searchByName" aria-label="Search" style="color: rgba(46,86,80,1); width: 92.5%; height: 40px; font-size: 18px; border: 1px solid rgba(46,86,80,1)">
-                    <button class="btn btn-primary" type="submit" style="background-color: rgba(46,86,80,1); border: 1px solid rgba(46,86,80,1); height: 40px"><i class="fa fa-search" style="color: white" aria-hidden="true"></i></button>
-                </form>
-            </div>
+<!--            <div class="container">-->
+<!--                <form class="form-inline d-flex justify-content-center md-form form-sm active-pink-2" th:action="@{'/search'}" method="get">-->
+<!--                    <input type="hidden" name="searchByFrom" value="">-->
+<!--                    <input type="hidden" name="searchByTo" value="">-->
+<!--                    <input class="form-control form-control-sm mr-3" type="text" th:placeholder="#{label.search}"-->
+<!--                           name="searchByName" aria-label="Search" style="color: rgba(46,86,80,1); width: 92.5%; height: 40px; font-size: 18px; border: 1px solid rgba(46,86,80,1)">-->
+<!--                    <button class="btn btn-primary" type="submit" style="background-color: rgba(46,86,80,1); border: 1px solid rgba(46,86,80,1); height: 40px"><i class="fa fa-search" style="color: white" aria-hidden="true"></i></button>-->
+<!--                </form>-->
+<!--            </div>-->
             <div class="container">
                 <div class="carousel__about">
                     <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
@@ -23,13 +23,13 @@
                         </ol>
                         <div class="carousel-inner" role="listbox">
                             <div class="carousel-item active" style="height: 350px; width: 100%">
-                                <img class="d-block w-100" data-src="holder.js/900x300?auto=yes&amp;bg=777&amp;fg=555&amp;text=First slide" alt="First slide [900x300]" th:src="@{'https://insdrcdn.com/media/attachments/e/78/b1123778e.jpg'}" data-holder-rendered="true">
+                                <img class="d-block w-100" data-src="holder.js/900x300?auto=yes&amp;bg=777&amp;fg=555&amp;text=First slide" alt="First slide [900x300]" th:src="@{'https://www.technodom.kz/media/catalog/product/cache/1366e688ed42c99cd6439df4031862c6/2/c/2c46b0d1891692e9ff3e3104aac71388a83b1a0a_215396_2as.jpg'}" data-holder-rendered="true">
                             </div>
                             <div class="carousel-item" style="height: 350px; width: 100%">
-                                <img class="d-block w-100" data-src="holder.js/900x300?auto=yes&amp;bg=666&amp;fg=444&amp;text=Second slide" alt="Second slide [900x300]" th:src="@{'https://img.gazeta.ru/files3/109/13167109/iphone-pic4_zoom-1500x1500-38803.jpg'}" data-holder-rendered="true">
+                                <img class="d-block w-100" data-src="holder.js/900x300?auto=yes&amp;bg=666&amp;fg=444&amp;text=Second slide" alt="Second slide [900x300]" th:src="@{'https://www.technodom.kz/media/catalog/product/c/c/ccb7f9a6a412b21389519dca1df640a9afd3e02b_15480134533150.jpg'}" data-holder-rendered="true">
                             </div>
                             <div class="carousel-item" style="height: 350px; width: 100%">
-                                <img class="d-block w-100" data-src="holder.js/900x300?auto=yes&amp;bg=666&amp;fg=444&amp;text=Second slide" alt="Third slide [900x300]" th:src="@{'https://img.freepik.com/free-psd/smartwatch_212802-111.jpg?size=626&ext=jpg'}" data-holder-rendered="true"
+                                <img class="d-block w-100" data-src="holder.js/900x300?auto=yes&amp;bg=666&amp;fg=444&amp;text=Second slide" alt="Third slide [900x300]" th:src="@{'https://i01.appmifile.com/webfile/globalimg/Joy/D1SD2S/Negro-800x800.png'}" data-holder-rendered="true">
                             </div>
                         </div>
 
@@ -48,19 +48,16 @@
             <div class="container">
                 <div class="row mt-5">
                     <div class="col-4" th:each="i : ${items}">
-                        <div class="card" style="margin-bottom: 20px; min-height: 520px;" >
-                            <div class="card-header" style="height: 65px; ">
-                                <a th:href="@{'/details/' + ${i.getId()}}" style="color: blue; font-size: 18px" th:text="${i.getName()}"></a>
-                            </div>
+                        <div class="card" style="margin-bottom: 20px;">
                             <div class="card-body">
                                 <img th:src="${i.getSmallPic()}" class="card-img-top" alt="" style="padding-bottom: 10px">
                                 <span style="padding-top:10px; font-size: 20px; font-weight: bold" th:text="${i.getPrice()}"></span><span style="font-size: 20px; font-weight: bold"> T</span>
                                 <p style="font-size: 16px" class="card-text" th:text="${i.getDescription()}"></p>
-                                <span style="font-size: 18px; font-weight: bold" th:text="#{label.item_brand}"></span>: <a th:href="@{'/search?searchByBrand=' + ${i.getBrand().getName()}}" th:text="${i.getBrand().getName() + ', ' + i.getBrand().getCountry().getName()}" style="font-weight: bold; font-size: 18px; color: blue"></a>
+                                <p th:href="@{'/search?searchByBrand=' + ${i.getBrand().getName()}}" th:text="${i.getBrand().getName() + ', ' + i.getBrand().getCountry().getName()}" style="font-weight: bold; font-size: 18px; color: darkred"></p>
                             </div>
-                            <div class="card-footer" style="background-color: lightgrey; height: 40px; position: relative; bottom: 0">
-                                <i class="fa fa-star" style="color: yellow; margin: 0 0 5px 8px" th:each="number: ${#numbers.sequence(0, i.getStars()-1)}"></i>
-                            </div>
+<!--                            <div class="card-footer" style="background-color: lightgrey; height: 40px; position: relative; bottom: 0">-->
+<!--                                <i class="fa fa-star" style="color: yellow; margin: 0 0 5px 8px" th:each="number: ${#numbers.sequence(0, i.getStars()-1)}"></i>-->
+<!--                            </div>-->
                         </div>
                     </div>
                 </div>

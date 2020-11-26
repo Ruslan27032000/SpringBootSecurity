@@ -3,12 +3,14 @@
         <a th:href="@{'/'}"
            style="text-decoration: none; color: white; font-size: 26px; font-weight: bold; padding-left: 10px">Home</a>
     </div>
-    <div class="col-sm-3 text-left" style="height: 30px;">
+    <div class="col-sm-3 text-left">
         <div class="btn-group">
 
             <a class="btn btn-link" th:href="@{'?lng=en'}">ENG</a>
             <a class="btn btn-link" th:href="@{'?lng=ru'}">РУС</a>
-
+            <a th:href="@{'/changePas'}" class="btn btn-outline-secondary" style="text-decoration: none; color:white;"
+               th:text="#{changePas}" sec:authorize="isAuthenticated()">
+            </a>
             <a th:href="@{'/login'}" class="btn btn-outline-secondary" style="text-decoration: none; color:white;"
                th:text="#{button.login}" sec:authorize="isAnonymous()">
             </a>

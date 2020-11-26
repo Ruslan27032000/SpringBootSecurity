@@ -1,8 +1,8 @@
-package com.example.demo.controllers;
+package com.example.controllers;
 
-import com.example.demo.entities.*;
-import com.example.demo.services.ItemService;
-import com.example.demo.services.UserService;
+import com.example.entities.*;
+import com.example.services.ItemService;
+import com.example.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -367,4 +367,50 @@ public class HomeController {
         }
         return null;
     }
+
+    @GetMapping(value = "/registration")
+    public String registrationPage(Model model){
+        return "registration";
+    }
+
+    @PostMapping(value ="/registration")
+    public String toRegistration(@RequestParam(name="user_email") String email,
+                                 @RequestParam(name="user_password") String password,
+                                 @RequestParam(name="re-user_password") String rePassword,
+                                 @RequestParam(name="user_full_name") String fullName){
+
+        if(password.equals(rePassword)){
+            Users newUser = new Users();
+            newUser.setFullName(fullName);
+            newUser.setPassword(password);
+            newUser.setEmail(email);
+            if(userService.createUser(newUser)!=null){
+                return "redirect:/login?success";
+            }
+        }
+        return "redirect:/registration?error";
+
+    }
+
+
+    @GetMapping(value = "/changePas")
+    @PreAuthorize("isAuthenticated()")
+    public String toChangePas(Model model){
+        return "changePassword";
+    }
+
+    @PostMapping(value = "/changePas")
+    public String changePas(@RequestParam(name="user_password") String password,
+                            @RequestParam(name="re_user_password") String re_password){
+        if(password.equals(re_password)){
+            Users currentUser = getUserData();
+            currentUser.setPassword(password);
+            if(userService.saveUser(currentUser)!=null){
+                return "redirect:/";
+            }
+        }
+
+        return "redirect:/changePas?error";
+    }
+
 }

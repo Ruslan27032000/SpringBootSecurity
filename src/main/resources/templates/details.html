@@ -24,9 +24,6 @@
                             <p style="font-size: 16px" class="card-text" th:text="${item.getDescription()}"></p>
                             <span style="font-size: 18px; font-weight: bold" th:text="#{label.item_brand}"></span>: <a th:href="@{'/search?searchByBrand=' + ${item.getBrand().getName()}}" th:text="${item.getBrand().getName() + ', ' + item.getBrand().getCountry().getName()}" style="font-weight: bold; font-size: 18px; color: blue"></a>
                         </div>
-                        <div class="card-footer" style="background-color: lightgrey; height: 40px; position: relative; bottom: 0">
-                            <i class="fa fa-star" style="color: yellow; margin: 0 0 5px 8px" th:each="number: ${#numbers.sequence(0, item.getStars()-1)}"></i>
-                        </div>
                     </div>
 
                 </div>

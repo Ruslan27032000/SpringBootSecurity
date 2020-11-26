@@ -1,8 +1,10 @@
-<html xmlns:th = "http://www.thymeleaf.org" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/admin.html">
+<html xmlns:th = "http://www.thymeleaf.org" xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/admin.html"
+      xmlns:sec = "http://www.thymeleaf.org/extras/spring-security"
+>
 
 <div layout:fragment="admin_content">
     <div class="container">
-        <button class="btn btn-info"  data-toggle="modal" data-target="#addBrand" style="background-color: rgba(20,0,72,1); " th:text="#{button.add_new_brand}"></button>
+        <button class="btn btn-info"  data-toggle="modal" sec:authorize="hasRole('ROLE_ADMIN')" data-target="#addBrand" style="background-color: #C93D2B;" th:text="#{button.add_new_brand}"></button>
         <div class="modal fade" id="addBrand" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -51,7 +53,7 @@
                         <td th:text="${brand.getName()}"></td>
                         <td th:text="${brand.getCountry()!=null?brand.getCountry().getName():'-'}"></td>
                         <td>
-                            <button class="btn btn-info"  data-toggle="modal" th:data-target="'#detailsBrand' + ${brand.getId()}" style="background-color: rgba(20,0,72,1); " th:text="#{button.details}"></button>
+                            <button class="btn btn-info"  data-toggle="modal" th:data-target="'#detailsBrand' + ${brand.getId()}" style="background-color: #C93D2B " th:text="#{button.details}"></button>
                             <div class="modal fade" th:id="'detailsBrand' + ${brand.getId()}" tabindex="-1" aria-labelledby="addModalLabel1" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -77,7 +79,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="submit" name="act" value="edit" class="btn btn-primary" style="background-color: rgba(46,86,80,1);" th:text="#{button.edit}"></button>
-                                                <button type="submit" name="act" value="delete" class="btn btn-danger" th:text="#{button.delete}"></button>
+                                                <button type="submit" name="act" value="delete"  sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-danger" th:text="#{button.delete}"></button>
                                             </div>
                                         </form>
                                     </div>

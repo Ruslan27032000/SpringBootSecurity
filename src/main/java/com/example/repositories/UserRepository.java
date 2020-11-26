@@ -1,6 +1,6 @@
-package com.example.demo.repositories;
+package com.example.repositories;
 
-import com.example.demo.entities.Users;
+import com.example.entities.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,5 +12,4 @@ import javax.transaction.Transactional;
 public interface UserRepository extends JpaRepository<Users, Long> {
 
     Users findByEmail(String email);
-
 }
