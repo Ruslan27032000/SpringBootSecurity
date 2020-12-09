@@ -3,7 +3,13 @@ package com.example.controllers;
 import com.example.entities.*;
 import com.example.services.ItemService;
 import com.example.services.UserService;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.IOUtils;
+import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,11 +17,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,10 +39,20 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
+    @Value("${file.avatar.viewPath}")
+    private String viewPath;
+
+    @Value("${file.avatar.uploadPath}")
+    private String uploadPath;
+
+    @Value("${file.avatar.defaultPicture}")
+    private String defaultPicture;
+
     @GetMapping(value = "/")
     public String home(Model model) {
         List<Items> items = itemService.getTopItems();
         model.addAttribute("items", items);
+        model.addAttribute("currentUser", getUserData());
         return "index";
     }
 
@@ -354,7 +373,7 @@ public class HomeController {
     @GetMapping(value = "/profile")
     @PreAuthorize("isAuthenticated()")
     public String profile(Model model) {
-        model.addAttribute("currentUser",getUserData());
+        model.addAttribute("currentUser", getUserData());
         return "profile";
     }
 
@@ -369,22 +388,22 @@ public class HomeController {
     }
 
     @GetMapping(value = "/registration")
-    public String registrationPage(Model model){
+    public String registrationPage(Model model) {
         return "registration";
     }
 
-    @PostMapping(value ="/registration")
-    public String toRegistration(@RequestParam(name="user_email") String email,
-                                 @RequestParam(name="user_password") String password,
-                                 @RequestParam(name="re-user_password") String rePassword,
-                                 @RequestParam(name="user_full_name") String fullName){
+    @PostMapping(value = "/registration")
+    public String toRegistration(@RequestParam(name = "user_email") String email,
+                                 @RequestParam(name = "user_password") String password,
+                                 @RequestParam(name = "re-user_password") String rePassword,
+                                 @RequestParam(name = "user_full_name") String fullName) {
 
-        if(password.equals(rePassword)){
+        if (password.equals(rePassword)) {
             Users newUser = new Users();
             newUser.setFullName(fullName);
             newUser.setPassword(password);
             newUser.setEmail(email);
-            if(userService.createUser(newUser)!=null){
+            if (userService.createUser(newUser) != null) {
                 return "redirect:/login?success";
             }
         }
@@ -395,22 +414,77 @@ public class HomeController {
 
     @GetMapping(value = "/changePas")
     @PreAuthorize("isAuthenticated()")
-    public String toChangePas(Model model){
+    public String toChangePas(Model model) {
+        model.addAttribute("currentUser", getUserData());
         return "changePassword";
     }
 
     @PostMapping(value = "/changePas")
-    public String changePas(@RequestParam(name="user_password") String password,
-                            @RequestParam(name="re_user_password") String re_password){
-        if(password.equals(re_password)){
+    public String changePas(@RequestParam(name = "user_password") String password,
+                            @RequestParam(name = "re_user_password") String re_password) {
+        if (password.equals(re_password)) {
             Users currentUser = getUserData();
             currentUser.setPassword(password);
-            if(userService.saveUser(currentUser)!=null){
+            if (userService.saveUser(currentUser) != null) {
                 return "redirect:/";
             }
         }
 
+
         return "redirect:/changePas?error";
     }
+
+    @PostMapping(value = "/uploadFile")
+    @PreAuthorize("isAuthenticated()")
+    public String uploadFile(@RequestParam(name = "file") MultipartFile file) {
+
+
+        if (file.getContentType().equals("image/jpeg") || file.getContentType().equals("image/jpeg")) {
+            try {
+
+                Users currentUser = getUserData();
+                String picName = DigestUtils.sha1Hex("avatar_" + currentUser.getId() + "_!Picture");
+                byte[] bytes = file.getBytes();
+                Path path = Paths.get(uploadPath + picName + ".jpg");
+                Files.write(path, bytes);
+
+                currentUser.setUserAvatar(picName);
+                userService.saveFile(currentUser);
+                return  "redirect:/";
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        return "redirect:/";
+    }
+
+    @GetMapping(value = "/viewPhoto/{url}", produces = {MediaType.IMAGE_JPEG_VALUE})
+    @PreAuthorize("isAuthenticated()")
+    public @ResponseBody byte[] viewProfilePhoto(@PathVariable(name = "url") String url) throws IOException {
+        String pictureUrl = viewPath + defaultPicture;
+        if(url!=null && !url.equals(("null"))){
+            pictureUrl = viewPath+url+".jpg";
+        }
+
+        InputStream in;
+
+        try {
+
+            ClassPathResource resource = new ClassPathResource(pictureUrl);
+            in = resource.getInputStream();
+
+        }catch (Exception e){
+
+            ClassPathResource resource = new ClassPathResource(viewPath + defaultPicture);
+            in = resource.getInputStream();
+            e.printStackTrace();
+        }
+
+        return IOUtils.toByteArray(in);
+    }
+
+
 
 }

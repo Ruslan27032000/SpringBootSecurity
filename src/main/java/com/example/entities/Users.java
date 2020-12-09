@@ -29,6 +29,8 @@ public class Users {
     @Column(name="full_name")
     private String fullName;
 
+    @Column(name="user_avatar")
+    private String userAvatar;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Roles> roles;

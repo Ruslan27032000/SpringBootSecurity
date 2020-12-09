@@ -9,4 +9,6 @@ public interface UserService extends UserDetailsService {
     Users createUser(Users user);
 
     Users saveUser(Users user);
+
+    Users saveFile(Users user);
 }
