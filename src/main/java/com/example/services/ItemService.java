@@ -1,9 +1,6 @@
 package com.example.services;
 
-import com.example.entities.Brands;
-import com.example.entities.Categories;
-import com.example.entities.Countries;
-import com.example.entities.Items;
+import com.example.entities.*;
 
 import java.util.List;
 
@@ -40,4 +37,10 @@ public interface ItemService {
     Categories editCategory(Categories category);
     Categories addCategory(Categories category);
     void deleteCategory(Categories category);
+
+
+    List<Comments> getAllCommentsById(Long id);
+    Comments addComment(Comments comments);
+    void deleteComment(Comments comments);
+    Comments getCommentById(Long id);
 }

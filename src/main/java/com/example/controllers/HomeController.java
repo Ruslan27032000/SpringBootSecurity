@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -50,6 +51,7 @@ public class HomeController {
 
     @GetMapping(value = "/")
     public String home(Model model) {
+
         List<Items> items = itemService.getTopItems();
         model.addAttribute("items", items);
         model.addAttribute("currentUser", getUserData());
@@ -313,6 +315,9 @@ public class HomeController {
     @GetMapping(value = "/details/{item_id}")
     public String itemDetails(Model model, @PathVariable(name = "item_id") Long id) {
         Items item = itemService.getItem(id);
+        List<Comments> comments = itemService.getAllCommentsById(id);
+        System.out.println(comments);
+        model.addAttribute("comments", comments);
         model.addAttribute("item", item);
         return "details";
     }
@@ -450,7 +455,7 @@ public class HomeController {
 
                 currentUser.setUserAvatar(picName);
                 userService.saveFile(currentUser);
-                return  "redirect:/";
+                return "redirect:/";
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -462,10 +467,11 @@ public class HomeController {
 
     @GetMapping(value = "/viewPhoto/{url}", produces = {MediaType.IMAGE_JPEG_VALUE})
     @PreAuthorize("isAuthenticated()")
-    public @ResponseBody byte[] viewProfilePhoto(@PathVariable(name = "url") String url) throws IOException {
+    public @ResponseBody
+    byte[] viewProfilePhoto(@PathVariable(name = "url") String url) throws IOException {
         String pictureUrl = viewPath + defaultPicture;
-        if(url!=null && !url.equals(("null"))){
-            pictureUrl = viewPath+url+".jpg";
+        if (url != null && !url.equals(("null"))) {
+            pictureUrl = viewPath + url + ".jpg";
         }
 
         InputStream in;
@@ -475,7 +481,7 @@ public class HomeController {
             ClassPathResource resource = new ClassPathResource(pictureUrl);
             in = resource.getInputStream();
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             ClassPathResource resource = new ClassPathResource(viewPath + defaultPicture);
             in = resource.getInputStream();
@@ -485,6 +491,27 @@ public class HomeController {
         return IOUtils.toByteArray(in);
     }
 
+    @PostMapping(value = "leaveComment")
+    public String uploadFile(@RequestParam(name = "comment") String comment,
+                             @RequestParam(name = "itemId") Long itemId) {
+        Comments comments = new Comments();
+        Items item = itemService.getItem(itemId);
+        comments.setAuthor(getUserData());
+        comments.setComment(comment);
+        comments.setItems(item);
+        itemService.addComment(comments);
+        return "redirect:/details/" + itemId;
 
+    }
+
+    @GetMapping(value = "/deleteComment")
+    public String DeleteComment(@RequestParam(name = "commentId") Long commentId,
+                                @RequestParam(name = "itemId") Long itemId) {
+
+        Comments comments = itemService.getCommentById(commentId);
+        itemService.deleteComment(comments);
+
+        return "redirect:/details/" + itemId;
+    }
 
 }

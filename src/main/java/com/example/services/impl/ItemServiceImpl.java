@@ -1,13 +1,7 @@
 package com.example.services.impl;
 
-import com.example.entities.Brands;
-import com.example.entities.Categories;
-import com.example.entities.Countries;
-import com.example.entities.Items;
-import com.example.repositories.BrandRepository;
-import com.example.repositories.CategoriesRepository;
-import com.example.repositories.CountryRepository;
-import com.example.repositories.ItemRepository;
+import com.example.entities.*;
+import com.example.repositories.*;
 import com.example.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -114,7 +108,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void deleteCountry(Countries country) { countryRepository.delete(country); }
+    public void deleteCountry(Countries country) {
+        countryRepository.delete(country);
+    }
 
 
     @Autowired
@@ -141,7 +137,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void deleteBrand(Brands brand) { brandRepository.delete(brand); }
+    public void deleteBrand(Brands brand) {
+        brandRepository.delete(brand);
+    }
 
 
     @Autowired
@@ -168,5 +166,30 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void deleteCategory(Categories category) { categoriesRepository.delete(category); }
+    public void deleteCategory(Categories category) {
+        categoriesRepository.delete(category);
+    }
+
+
+    @Autowired
+    private CommentsRepository commentsRepository;
+
+    @Override
+    public List<Comments> getAllCommentsById(Long id) {
+        return commentsRepository.getAllByItemsId(id);
+    }
+
+    public Comments getCommentById(Long id){
+        return commentsRepository.getOne(id);
+    }
+
+    @Override
+    public Comments addComment(Comments comments) {
+        return commentsRepository.save(comments);
+    }
+
+    @Override
+    public void deleteComment(Comments comments) {
+        commentsRepository.delete(comments);
+    }
 }

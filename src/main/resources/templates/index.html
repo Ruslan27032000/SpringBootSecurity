@@ -49,6 +49,9 @@
                 <div class="row mt-5">
                     <div class="col-4" th:each="i : ${items}">
                         <div class="card" style="margin-bottom: 20px;">
+                            <div class="card-header" style="height: 65px; ">
+                                <a th:href="@{'/details/' + ${i.getId()}}" style="color: blue; font-size: 18px" th:text="${i.getName()}"></a>
+                            </div>
                             <div class="card-body">
                                 <img th:src="${i.getSmallPic()}" class="card-img-top" alt="" style="padding-bottom: 10px">
                                 <span style="padding-top:10px; font-size: 20px; font-weight: bold" th:text="${i.getPrice()}"></span><span style="font-size: 20px; font-weight: bold"> T</span>
