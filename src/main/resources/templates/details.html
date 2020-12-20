@@ -28,7 +28,7 @@
                                  style="width: 100%; height: 530px; padding-bottom: 10px">
                             <h4 style="color: blue" th:text="${item.getName()}"></h4>
                             <span style="padding-top:10px; font-size: 20px; font-weight: bold"
-                                  th:text="${item.getPrice()}"></span><span style="font-size: 20px; font-weight: bold"> T</span>
+                                  th:text="${item.getPrice()}"></span><span style="font-size: 20px; font-weight: bold"> ₸</span>
                             <p style="font-size: 16px" class="card-text" th:text="${item.getDescription()}"></p>
                             <span style="font-size: 18px; font-weight: bold" th:text="#{label.item_brand}"></span>: <a
                                 th:href="@{'/search?searchByBrand=' + ${item.getBrand().getName()}}"
@@ -39,18 +39,18 @@
                 </div>
             </div>
 
-            <div class="container mb-12" sec:authorize="isAuthenticated()" style="margin-bottom: 30px">
+            <div class="container" sec:authorize="isAuthenticated()" style="margin-bottom: 30px">
                 <div class="column mt-5">
                     <form th:action="@{'/leaveComment'}" method="post" style="margin-bottom: 30px">
-                        <label for="form">Оставить комментарий</label>
+                        <label for="form" th:text="#{comment.title}"></label>
                         <textarea class="form-control" id="form" rows="3" name="comment"></textarea>
                         <input type="hidden" name="itemId" th:value="${item.getId()}">
-                        <button type="submit" class="btn btn-success float-right mt-2">Отправить</button>
+                        <button type="submit" class="btn btn-success float-right mt-2" th:text="#{comment.send}"></button>
                     </form>
                 </div>
             </div>
 
-            <div class="container mt-12" sec:authorize="isAuthenticated()">
+            <div class="container pt-5" sec:authorize="isAuthenticated()">
                 <div class="card" th:each="c : ${comments}">
                     <div class="card-body">
                         <div class="row">
@@ -65,7 +65,7 @@
                                 <div class="clearfix"></div>
                                 <p th:text="${c.getComment()}"></p>
                                 <p  sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MODERATOR')">
-                                    <a class="float-right btn text-white btn-danger" th:href="@{'/deleteComment?commentId='+${c.getId()} + '&itemId='+${item.getId()}}"> <i class="fa fa-trash"></i>Удалить</a>
+                                    <a class="float-right btn text-white btn-danger" th:href="@{'/deleteComment?commentId='+${c.getId()} + '&itemId='+${item.getId()}}" th:text="#{comment.delete}"> <i class="fa fa-trash"></i>Удалить</a>
                                 </p>
                             </div>
                         </div>
@@ -73,7 +73,7 @@
                 </div>
             </div>
 
-            <div class="container mt-12" sec:authorize="isAnonymous()">
+            <div class="container pt-5" sec:authorize="isAnonymous()">
                 <div class="card" th:each="c : ${comments}">
                     <div class="card-body">
                         <div class="row">
