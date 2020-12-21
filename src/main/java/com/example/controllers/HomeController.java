@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -371,7 +372,10 @@ public class HomeController {
     }
 
     @GetMapping(value = "/login")
-    public String login(Model model) {
+    public String login(Model model,@RequestParam(name = "status",defaultValue = "") String status,RedirectAttributes redirAttrs) {
+        if(status.equals("error")){
+            model.addAttribute("errorData", "Ошибка авторизации");
+        }
         return "login";
     }
 
@@ -401,7 +405,8 @@ public class HomeController {
     public String toRegistration(@RequestParam(name = "user_email") String email,
                                  @RequestParam(name = "user_password") String password,
                                  @RequestParam(name = "re-user_password") String rePassword,
-                                 @RequestParam(name = "user_full_name") String fullName) {
+                                 @RequestParam(name = "user_full_name") String fullName,
+                                 RedirectAttributes redirAttrs) {
 
         if (password.equals(rePassword)) {
             Users newUser = new Users();
@@ -409,10 +414,13 @@ public class HomeController {
             newUser.setPassword(password);
             newUser.setEmail(email);
             if (userService.createUser(newUser) != null) {
-                return "redirect:/login?success";
+                redirAttrs.addFlashAttribute("success", "Успешно зарегестрированы");
+                return "redirect:/registration";
             }
         }
-        return "redirect:/registration?error";
+
+        redirAttrs.addFlashAttribute("error", "Ошибка регистрации");
+        return "redirect:/registration";
 
     }
 

@@ -2,6 +2,8 @@
       layout:decorator="layout/main.html">
 
 <div layout:fragment="content_site">
+    <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
+    <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
     <div class="row mt-5">
         <div class="col-6 offset-3">
             <form th:action="@{'/registration'}" method="post">
